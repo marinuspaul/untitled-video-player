@@ -1,0 +1,189 @@
+---
+import Default from "../../layouts/Default.astro";
+import "../../styles/global.css";
+import { getCollection, getEntry } from "astro:content";
+
+export async function getStaticPaths() {
+  const films = await getCollection("films");
+
+  const paths = films.map((film) => ({
+    params: { film: film.slug },
+    props: film.data,
+  }));
+  return paths;
+}
+
+const { film } = Astro.params;
+const filmInfo = Astro.props;
+
+const playerInfo = await getEntry("ui", "player-ui");
+
+// console.log(Astro.params);
+---
+
+<Default title={filmInfo.title}>
+  <main>
+    <div class="content-container">
+      <div class="content">
+        <video-js id="film-player" class="film">
+          <source src={`/films/${film}.mov`} type="video/mp4" />
+          <source src={`/films/${film}.mp4`} type="video/mp4" />
+        </video-js>
+        <div id="info-overlay">
+          <a class="back-link" href="/"
+            >←{" " + playerInfo.data.backButtonText}</a
+          >
+          <div class="title-section">
+            <h1 class="film-title">{filmInfo.title}</h1>
+            <h3 class="author">by {filmInfo.author}</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</Default>
+
+<style>
+  body {
+    margin: 0;
+    overflow: hidden;
+  }
+
+  .content-container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: black;
+  }
+
+  .content {
+    position: relative;
+    height: fit-content;
+    border: 2px solid var(--accent-color);
+  }
+
+  .film {
+    display: block;
+    width: 100vw;
+    /* height: max-content; */
+    aspect-ratio: 16/9;
+    height: 100vh;
+  }
+
+  #info-overlay {
+    box-sizing: border-box;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.7) 0%,
+      rgba(0, 0, 0, 0.413624824929972) 57%,
+      rgba(0, 0, 0, 0) 100%
+    );
+
+    padding: 5rem 3rem 9rem 3rem;
+    animation: fadeIn 0.3s;
+  }
+
+  .title-section {
+    margin: 2rem 1rem;
+  }
+
+  .film-title {
+    font-size: 4rem;
+    margin: 0;
+  }
+
+  .back-link {
+    background-color: rgba(255, 255, 255, 0.372);
+    font-size: 1.5rem;
+    border-radius: 3rem;
+    padding: 0.7rem 1.5rem;
+    text-decoration: none;
+    color: white;
+    transition: all 0.3s;
+  }
+
+  .back-link:hover {
+    background-color: rgba(255, 255, 255, 0.5);
+  }
+
+  .author {
+    font-weight: 400;
+    color: var(--accent-color);
+    margin: 0.5rem 0;
+    font-size: 1.5rem;
+  }
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes fadeOut {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+</style>
+
+<script>
+  import videojs from "video.js";
+  import "video.js/dist/video-js.css";
+
+  videojs.options.autoplay = true;
+  let player = videojs("film-player", {
+    controls: true,
+    autoplay: true,
+    enableSmoothSeeking: true,
+    liveui: true,
+    preload: "auto",
+    inactivityTimeout: 1000,
+  });
+
+  const infoOverlay = document.getElementById("info-overlay");
+  player.on("userinactive", function () {
+    // Remove Overlay when user becomes inactive
+    if (!player.paused()) infoOverlay.style.display = "none";
+  });
+
+  player.on("useractive", function () {
+    // Show Overlay when user becomes active
+    infoOverlay.style.display = "block";
+  });
+</script>
+
+<style is:global>
+  .vjs-mute-control,
+  .vjs-volume-panel,
+  .vjs-picture-in-picture-control,
+  .vjs-fullscreen-control {
+    display: none !important;
+  }
+
+  .video-js .vjs-control-bar {
+    font-size: 1.5rem;
+  }
+
+  .vjs-modal-dialog-content {
+    user-select: none;
+    pointer-events: none;
+  }
+
+  .vjs-big-play-button {
+    font-size: 9rem !important;
+    border: none !important;
+    background: none !important;
+  }
+</style>

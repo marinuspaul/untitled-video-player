@@ -1,0 +1,29 @@
+@font-face {
+  font-family: "Source Sans 3";
+  src: url("/fonts/SourceSans3-VariableFont_wght.woff2")
+      format("woff2-variations"),
+    url("/fonts/SourceSans3-VariableFont_wght.ttf")
+      format("truetype-variations");
+  font-weight: 200 900;
+}
+
+:root {
+  --bg-color: #151515;
+  --accent-color: #47c68e;
+}
+
+html {
+  font-family: "Source Sans 3", "source-sans-3", system-ui, sans-serif;
+  background: var(--bg-color);
+  color: white;
+  background-size: 224px;
+}
+
+*::selection {
+  background-color: var(--accent-color);
+  color: var(--bg-color);
+}
+
+a {
+  color: var(--accent-color);
+}

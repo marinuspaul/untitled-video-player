@@ -1,0 +1,111 @@
+---
+import Default from "../layouts/Default.astro";
+import FilmCover from "../components/FilmCover.astro";
+import { getCollection, getEntry } from "astro:content";
+
+const films = await getCollection("films");
+const parsedFilms = films.map((film) => ({
+  filmID: film.slug,
+  title: film.data.title,
+  author: film.data.author,
+  sectionID: film.data?.sectionID,
+}));
+
+const sections = await getCollection("sections");
+
+const parsedContent = sections.map((section) => ({
+  data: section.data,
+  films: parsedFilms.filter((film) => film.sectionID == section.data.id),
+}));
+// console.log(parsedContent);
+
+const menuInfo = await getEntry("ui", "menu-ui");
+// console.log(menuInfo);
+---
+
+<Default title={menuInfo.data.title}>
+  <main>
+    <div class="head">
+      <h3 class="subtitle">{menuInfo.data.subtitle}</h3>
+      <h1 class="main-title">{menuInfo.data.title}</h1>
+    </div>
+
+    {
+      parsedContent.map((section) => (
+        <div class="section-section">
+          <div class="section-head">
+            <h2 class="section-title">{section.data.title}</h2>
+            <h3 class="subtitle">{section.data.subtitle}</h3>
+          </div>
+          <div class="film-grid">
+            {section.films.map((film) => (
+              <FilmCover
+                title={film.title}
+                filmID={film.filmID}
+                author={film.author}
+              />
+            ))}
+          </div>
+        </div>
+      ))
+    }
+  </main>
+
+  <style>
+    main {
+      margin: auto;
+      padding: 1rem;
+      width: 70vw;
+
+      color: white;
+      font-size: 20px;
+      line-height: 1.6;
+      margin-bottom: 10rem;
+    }
+
+    .head {
+      margin-top: 9rem;
+    }
+
+    h1 {
+      margin: -0.5rem 0 2rem 0;
+    }
+
+    .film-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+      gap: 2rem;
+      padding: 0;
+    }
+
+    .section-head {
+      margin-top: 8rem;
+      margin-bottom: 3rem;
+    }
+
+    .section-title {
+      font-size: 3.5rem;
+      margin: 0;
+      margin-top: -0.5rem;
+      margin-bottom: -0.8rem;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--accent-color);
+      font-variant: small-caps;
+      text-transform: lowercase;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+    }
+
+    .section-section {
+      width: 100%;
+    }
+
+    .main-title {
+      font-size: 5rem;
+      margin-top: -1rem;
+    }
+  </style>
+</Default>
