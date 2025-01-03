@@ -40,7 +40,7 @@ $ npm i
 ### 3. Provide your data
 
 You can provide your films and posters by simply dropping them in the `public` folder.
-The ideal resolution for the posters is 707px × 1000px and they should be in `.webp` format.
+The ideal resolution for the posters is 707px × 1000px and they should be in `.jpg` format.
 For best browser support the films should be in `.mp4` format.
 
 You also need to create a corresponding markdown file for each movie in the `src/content/films` directory.
