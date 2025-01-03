@@ -1,8 +1,8 @@
-# Untitled Video Player
+# Video Kiosk
 
 This is a very simple web-based videoplayer. It provides a netflix-like interface where users can select between different films based on their covers and watch them in a fullscreen player.
 
-As it was designed for a exhibition, it is as simple as possible without any distracting elements that are not needed in this context.
+As it was designed for a exhibition, it is as simple as possible. Just click on a movie poster, watch it, go back again, and pick another one. Don’t forget the popcorn!
 
 ![Video Player Example](./untitled-video-player-screenshot.jpg)
 
@@ -25,9 +25,13 @@ The player itself is based on [video.js](https://videojs.com/)
 
 Please note that this is a personal project made public. You are free to use it and modify it however you like, but as it was developed for a special use case, it is very likely you need to adapt quite a few things to your needs.
 
-### 1. Clone or download repository
+To set up and use the player, you need to fill it with your movie data and run a few simple terminal commands. This guide should explain everything in detail, even if you are not familiar with the workflow:
+
+### 1. Clone or download this repository
 
 ### 2. Install dependencies
+
+Make sure you have _node.js_ and _npm_ installed on your machine (You can do that [here](https://nodejs.org/en/download)). Then run in your terminal:
 
 ```console
 $ npm i
@@ -100,9 +104,13 @@ sectionID: example-section
 ---
 ```
 
-### 6. Customize player
+### 6. Customize player (optional)
 
-You can customize UI labels and the main title on the top of the interface by changing the properties of the files in the `content/ui` directory.
+You can customize UI labels and the main title on the top of the UI by changing the properties of the files in the `content/ui` directory.
+
+#### Styling
+
+If you want to change the general looks you can check out `src/styles/global.css` and change stuff like the accent color or typeface.
 
 ### 7. Run dev server to test
 
@@ -122,8 +130,24 @@ Builds your player into the `dist` directory.
 
 ### 7. Run
 
-You can now run the contents of your `dist` directory on any server or just start a local webserver, which was the most handy solution for me as I only needed to run it on a few machines for an exhibition.
+You can now run the contents of your `dist` directory on any server or just start a local webserver on your target machine, which was the most handy solution for me as I only needed to run it on a few machines for an exhibition.
+
+---
+
+#### Local http server with Python (example)
+
+For Mac, Python is a good option for the local server as it comes preinstalled or can easily be installed with XCode Command Line Tools. Just navigate to the folder with the built project and run the following (You’ll be prompted if you need to install something):
+
+```
+$ python3 -m http.server
+```
+
+Type `localhost:8000` in your browsers adress bar and enjoy!
 
 ## Notes
 
+Most browsers have an option to hide their UI and show nothing but the web page in full screen, which is handy if you want a fully focused experience without any distracting elements.
+
 Autoplay does not work by default in Safari. It needs to be enabled under “Settings > Websites”
+
+While running on a local Python server I ran into some issues with scrubbing through the video timeline in Chrome. This seems to be fixed in the latest version.
