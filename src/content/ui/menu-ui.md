@@ -1,4 +1,4 @@
 ---
-title: Video Player
+title: Video Kiosk
 subtitle: Welcome
 ---

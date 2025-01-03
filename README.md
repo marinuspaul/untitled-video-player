@@ -4,7 +4,7 @@ This is a very simple web-based videoplayer. It provides a netflix-like interfac
 
 As it was designed for a exhibition, it is as simple as possible without any distracting elements that are not needed in this context.
 
-![Video Player Example](./untitled-video-player-screenshot.png)
+![Video Player Example](./untitled-video-player-screenshot.jpg)
 
 ## How does it work?
 
